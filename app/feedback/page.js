@@ -1,18 +1,25 @@
 'use client'
 import { useState } from 'react'
+import { supabase } from '../../supabase'
 
 export default function Feedback() {
   const [whatWorks, setWhatWorks] = useState('')
   const [improve, setImprove] = useState('')
   const [rating, setRating] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!whatWorks || !improve || !rating) {
       alert('Please fill in all fields and select a rating!')
       return
     }
-    setSubmitted(true)
+    setLoading(true)
+    const { error } = await supabase
+      .from('feedback')
+      .insert([{ what_works: whatWorks, improve, rating, author: 'Anonymous' }])
+    if (!error) setSubmitted(true)
+    setLoading(false)
   }
 
   return (
@@ -76,9 +83,9 @@ export default function Feedback() {
               </div>
             </div>
 
-            <button onClick={handleSubmit}
-              className="w-full bg-black text-white rounded-lg py-3 text-sm font-medium hover:bg-gray-800">
-              Submit feedback
+            <button onClick={handleSubmit} disabled={loading}
+              className="w-full bg-black text-white rounded-lg py-3 text-sm font-medium hover:bg-gray-800 disabled:opacity-50">
+              {loading ? 'Submitting...' : 'Submit feedback'}
             </button>
           </div>
         )}
