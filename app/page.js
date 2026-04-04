@@ -8,6 +8,7 @@ export default function Home() {
         <div className="flex gap-3 items-center">
           <a href="/browse" className="text-sm text-gray-500 hover:text-gray-900">Browse</a>
           <a href="/submit" className="text-sm text-gray-500 hover:text-gray-900">Submit work</a>
+          <a href="/feedbacks" className="text-sm text-gray-500 hover:text-gray-900">Feedbacks</a>
           <a href="/login" className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">Log in</a>
           <a href="/signup" className="px-4 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800">Sign up</a>
         </div>
