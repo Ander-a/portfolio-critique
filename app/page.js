@@ -1,45 +1,29 @@
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
-
+    <main style={{ backgroundColor: '#59cd49', minHeight: '100vh', fontFamily: 'Poppins, sans-serif' }}>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+      
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
-        <span className="font-semibold text-gray-900">Portfolio Critique</span>
-        <div className="flex gap-3 items-center">
-          <a href="/browse" className="text-sm text-gray-500 hover:text-gray-900">Browse</a>
-          <a href="/submit" className="text-sm text-gray-500 hover:text-gray-900">Submit work</a>
-          <a href="/feedbacks" className="text-sm text-gray-500 hover:text-gray-900">Feedbacks</a>
-          <a href="/login" className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">Log in</a>
-          <a href="/signup" className="px-4 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800">Sign up</a>
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem 2rem', backgroundColor: 'rgba(255,255,255,0.9)', borderBottom: '4px solid #2e0d30' }}>
+        <span style={{ fontWeight: 600, color: '#2e0d30', fontSize: '1.2rem' }}>🐼 Portfolio Critique</span>
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <a href="/browse" style={{ textDecoration: 'none', color: '#3f3554', fontWeight: 600 }}>Browse</a>
+          <a href="/submit" style={{ textDecoration: 'none', color: '#3f3554', fontWeight: 600 }}>Submit</a>
+          <a href="/feedbacks" style={{ textDecoration: 'none', color: '#3f3554', fontWeight: 600 }}>Community</a>
+          <a href="/login" style={{ textDecoration: 'none', padding: '0.5rem 1rem', borderRadius: '2rem', backgroundColor: '#2e0d30', color: 'white' }}>Login</a>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="max-w-2xl mx-auto text-center px-8 py-24">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Share your work.<br />Get honest feedback.
-        </h1>
-        <p className="text-lg text-gray-500 mb-8">
-          A community where designers, writers, and developers
-          critique each other's work and grow together.
+      <section style={{ textAlign: 'center', padding: '5rem 2rem' }}>
+        <h1 style={{ fontSize: '4rem', color: '#2e0d30', marginBottom: '1rem' }}>Share & Grow.</h1>
+        <p style={{ fontSize: '1.2rem', color: '#3f3554', maxWidth: '600px', margin: '0 auto 2rem' }}>
+          The funnest place to get honest feedback on your design, code, and writing.
         </p>
-        <a href="/signup" className="inline-block px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-gray-800">
-          Get started for free
+        <a href="/signup" style={{ padding: '1rem 2rem', backgroundColor: '#ffffff', color: '#2e0d30', borderRadius: '3rem', fontWeight: 600, textDecoration: 'none', fontSize: '1.1rem', border: '3px solid #2e0d30' }}>
+          Join the Panda Pack 🐾
         </a>
       </section>
-
-      {/* Categories */}
-      <section className="max-w-2xl mx-auto px-8 pb-24">
-        <div className="grid grid-cols-3 gap-4">
-          {["Design", "Writing", "Code"].map((cat) => (
-            <div key={cat} className="border border-gray-100 rounded-xl p-6 text-center">
-              <p className="font-medium text-gray-900">{cat}</p>
-              <p className="text-sm text-gray-400 mt-1">Submit & get critiqued</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
     </main>
   )
 }

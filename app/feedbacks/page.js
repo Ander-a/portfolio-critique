@@ -19,46 +19,69 @@ export default function Feedbacks() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-white">
-      <nav className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
-        <a href="/" className="font-semibold text-gray-900">Portfolio Critique</a>
-        <div className="flex gap-4 items-center">
-          <a href="/browse" className="text-sm text-gray-500 hover:text-gray-900">Browse work</a>
-          <a href="/submit" className="px-4 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800">Submit work</a>
+    <main style={{ backgroundColor: '#59cd49', minHeight: '100vh', fontFamily: 'Poppins, sans-serif' }}>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+      
+      {/* Navigation */}
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 2rem', backgroundColor: 'white', borderBottom: '4px solid #2e0d30' }}>
+        <a href="/" style={{ textDecoration: 'none', fontWeight: 600, color: '#2e0d30', fontSize: '1.1rem' }}>🐼 Portfolio Critique</a>
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <a href="/browse" style={{ textDecoration: 'none', color: '#3f3554', fontWeight: 600, fontSize: '0.9rem' }}>Browse</a>
+          <a href="/submit" style={{ textDecoration: 'none', padding: '0.5rem 1.2rem', backgroundColor: '#2e0d30', color: 'white', borderRadius: '2rem', fontSize: '0.9rem' }}>Submit work</a>
         </div>
       </nav>
 
-      <section className="max-w-3xl mx-auto px-8 py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Community feedback</h1>
-        <p className="text-sm text-gray-500 mb-8">See what the community is saying about submitted work.</p>
+      <section style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem 2rem' }}>
+        <h1 style={{ color: '#2e0d30', fontSize: '2rem', fontWeight: 600, marginBottom: '0.5rem' }}>Community Feedback</h1>
+        <p style={{ color: '#3f3554', marginBottom: '2.5rem' }}>See what the pack is saying about recent projects.</p>
 
         {loading ? (
-          <p className="text-gray-400 text-sm">Loading...</p>
+          <p style={{ color: '#2e0d30', fontWeight: 600 }}>Loading feedback...</p>
         ) : feedbacks.length === 0 ? (
-          <p className="text-gray-400 text-sm">No feedback yet — be the first to give some!</p>
+          <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1.5rem', border: '3px solid #2e0d30', textAlign: 'center' }}>
+            <p style={{ color: '#3f3554' }}>No feedback yet — be the first to give some!</p>
+          </div>
         ) : (
-          <div className="flex flex-col gap-6">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {feedbacks.map((f) => (
-              <div key={f.id} className="border border-gray-100 rounded-xl p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-medium text-gray-900">{f.author}</span>
-                  <div className="flex items-center gap-1">
-                    {[1,2,3,4,5].map(n => (
-                      <div key={n} className={`w-6 h-6 rounded text-xs flex items-center justify-center font-medium ${n <= f.rating ? 'bg-black text-white' : 'bg-gray-100 text-gray-400'}`}>
+              <div key={f.id} style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '1.5rem', border: '3px solid #2e0d30', boxShadow: '6px 6px 0px #2e0d30' }}>
+                
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                  <span style={{ fontWeight: 600, color: '#2e0d30', fontSize: '1rem' }}>👤 {f.author || 'Anonymous'}</span>
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    {[1, 2, 3, 4, 5].map(n => (
+                      <div key={n} style={{ 
+                        width: '28px', 
+                        height: '28px', 
+                        borderRadius: '6px', 
+                        fontSize: '0.75rem', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        fontWeight: 600,
+                        border: '2px solid #2e0d30',
+                        backgroundColor: n <= f.rating ? '#59cd49' : '#f0f0f0',
+                        color: '#2e0d30'
+                      }}>
                         {n}
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="mb-3">
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">What works</p>
-                  <p className="text-sm text-gray-700 leading-relaxed">{f.what_works}</p>
+
+                <div style={{ marginBottom: '1.2rem' }}>
+                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#59cd49', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>🌟 What works</p>
+                  <p style={{ fontSize: '0.95rem', color: '#3f3554', lineHeight: '1.6' }}>{f.what_works}</p>
                 </div>
-                <div>
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">What to improve</p>
-                  <p className="text-sm text-gray-700 leading-relaxed">{f.improve}</p>
+
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#ff8bb1', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>🛠️ What to improve</p>
+                  <p style={{ fontSize: '0.95rem', color: '#3f3554', lineHeight: '1.6' }}>{f.improve}</p>
                 </div>
-                <p className="text-xs text-gray-300 mt-4">{new Date(f.created_at).toLocaleDateString()}</p>
+
+                <p style={{ fontSize: '0.75rem', color: '#a0a0a0', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+                  Posted on {new Date(f.created_at).toLocaleDateString()}
+                </p>
               </div>
             ))}
           </div>

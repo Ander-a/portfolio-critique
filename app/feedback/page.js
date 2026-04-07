@@ -17,78 +17,100 @@ export default function Feedback() {
     setLoading(true)
     const { error } = await supabase
       .from('feedback')
-      .insert([{ what_works: whatWorks, improve, rating, author: 'Anonymous' }])
+      .insert([{ what_works: whatWorks, improve, rating, author: 'Anonymous Panda' }])
     if (!error) setSubmitted(true)
     setLoading(false)
   }
 
   return (
-    <main className="min-h-screen bg-white">
-      <nav className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
-        <a href="/" className="font-semibold text-gray-900">Portfolio Critique</a>
-        <a href="/browse" className="text-sm text-gray-500 hover:text-gray-900">Browse work</a>
+    <main style={{ backgroundColor: '#59cd49', minHeight: '100vh', fontFamily: 'Poppins, sans-serif' }}>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+      
+      {/* Navigation */}
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 2rem', backgroundColor: 'white', borderBottom: '4px solid #2e0d30' }}>
+        <a href="/" style={{ textDecoration: 'none', fontWeight: 600, color: '#2e0d30' }}>🐼 Home</a>
+        <a href="/browse" style={{ textDecoration: 'none', color: '#3f3554', fontWeight: 600, fontSize: '0.9rem' }}>Back to Browse</a>
       </nav>
 
-      <section className="max-w-2xl mx-auto px-8 py-12">
-        <div className="border border-gray-100 rounded-xl p-6 mb-8">
-          <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Design</span>
-          <h1 className="text-xl font-bold text-gray-900 mt-2 mb-1">Mobile banking app redesign</h1>
-          <p className="text-sm text-gray-500 mb-4">by Alex K.</p>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            I redesigned the onboarding flow for a mobile banking app focusing on simplicity
-            and trust. Looking for feedback on the visual hierarchy and user flow.
+      <section style={{ maxWidth: '600px', margin: '0 auto', padding: '3rem 2rem' }}>
+        
+        {/* The Work Being Reviewed Card */}
+        <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '1.5rem', border: '3px solid #2e0d30', marginBottom: '2rem', boxShadow: '5px 5px 0px #2e0d30' }}>
+          <span style={{ fontSize: '0.7rem', backgroundColor: '#f0f0f0', color: '#3f3554', padding: '0.2rem 0.6rem', borderRadius: '1rem', fontWeight: 700 }}>REVIEWING</span>
+          <h1 style={{ color: '#2e0d30', fontSize: '1.5rem', marginTop: '0.5rem' }}>Mobile banking app redesign</h1>
+          <p style={{ color: '#3f3554', fontSize: '0.9rem', marginBottom: '1rem' }}>by Alex K.</p>
+          <p style={{ color: '#3f3554', fontSize: '0.9rem', lineHeight: '1.5' }}>
+            I redesigned the onboarding flow for a mobile banking app focusing on simplicity and trust.
           </p>
-          <a href="#" className="inline-block mt-4 text-sm text-black font-medium hover:underline">
-            View work →
-          </a>
         </div>
 
-        {submitted ? (
-          <div className="text-center py-12">
-            <p className="text-lg font-medium text-gray-900 mb-2">Feedback submitted!</p>
-            <p className="text-sm text-gray-500 mb-6">Thank you for helping this creator grow.</p>
-            <a href="/browse" className="px-6 py-3 bg-black text-white rounded-lg text-sm">
-              Browse more work
-            </a>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-lg font-bold text-gray-900">Give your feedback</h2>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">What works well?</label>
-              <p className="text-xs text-gray-400 mb-2">Be specific — point out what's strong and why.</p>
-              <textarea rows={3} value={whatWorks} onChange={e => setWhatWorks(e.target.value)}
-                placeholder="e.g. The colour palette feels trustworthy..."
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-900 outline-none focus:border-gray-400 resize-none" />
+        {/* The Feedback Form Card */}
+        <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '2rem', border: '4px solid #2e0d30', boxShadow: '8px 8px 0px #2e0d30' }}>
+          {submitted ? (
+            <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+              <h2 style={{ color: '#2e0d30' }}>Feedback Sent! 🐾</h2>
+              <p style={{ color: '#3f3554', marginBottom: '2rem' }}>The creator will see your tips in the community feed.</p>
+              <a href="/browse" style={{ display: 'inline-block', padding: '0.8rem 1.5rem', backgroundColor: '#59cd49', color: '#2e0d30', borderRadius: '2rem', fontWeight: 700, textDecoration: 'none', border: '3px solid #2e0d30' }}>
+                Browse more work
+              </a>
             </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <h2 style={{ color: '#2e0d30', textAlign: 'center' }}>Give Feedback</h2>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">What could be improved?</label>
-              <p className="text-xs text-gray-400 mb-2">Constructive suggestions only — be kind but honest.</p>
-              <textarea rows={3} value={improve} onChange={e => setImprove(e.target.value)}
-                placeholder="e.g. The CTA button gets lost on the third screen..."
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-900 outline-none focus:border-gray-400 resize-none" />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Overall rating</label>
-              <div className="flex gap-2">
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <button key={n} onClick={() => setRating(n)}
-                    className={`w-10 h-10 rounded-lg border text-sm font-medium transition-colors ${rating === n ? 'bg-black text-white border-black' : 'border-gray-200 text-gray-600 hover:bg-black hover:text-white hover:border-black'}`}>
-                    {n}
-                  </button>
-                ))}
+              <div>
+                <label style={{ display: 'block', fontWeight: 600, color: '#2e0d30', marginBottom: '0.5rem' }}>What works well?</label>
+                <textarea rows={3} value={whatWorks} onChange={e => setWhatWorks(e.target.value)}
+                  placeholder="The colors are great..."
+                  style={{ width: '100%', padding: '0.8rem', borderRadius: '1rem', border: '2px solid #3f3554', outline: 'none', fontSize: '0.9rem' }} />
               </div>
-            </div>
 
-            <button onClick={handleSubmit} disabled={loading}
-              className="w-full bg-black text-white rounded-lg py-3 text-sm font-medium hover:bg-gray-800 disabled:opacity-50">
-              {loading ? 'Submitting...' : 'Submit feedback'}
-            </button>
-          </div>
-        )}
+              <div>
+                <label style={{ display: 'block', fontWeight: 600, color: '#2e0d30', marginBottom: '0.5rem' }}>What to improve?</label>
+                <textarea rows={3} value={improve} onChange={e => setImprove(e.target.value)}
+                  placeholder="Maybe change the font..."
+                  style={{ width: '100%', padding: '0.8rem', borderRadius: '1rem', border: '2px solid #3f3554', outline: 'none', fontSize: '0.9rem' }} />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontWeight: 600, color: '#2e0d30', marginBottom: '0.8rem' }}>Overall Rating</label>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <button key={n} onClick={() => setRating(n)}
+                      style={{ 
+                        width: '45px', 
+                        height: '45px', 
+                        borderRadius: '12px', 
+                        border: '3px solid #2e0d30', 
+                        fontWeight: 700, 
+                        cursor: 'pointer',
+                        transition: '0.2s',
+                        backgroundColor: rating === n ? '#59cd49' : 'white',
+                        color: '#2e0d30'
+                      }}>
+                      {n}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button onClick={handleSubmit} disabled={loading}
+                style={{ 
+                  width: '100%', 
+                  padding: '1rem', 
+                  backgroundColor: '#2e0d30', 
+                  color: 'white', 
+                  borderRadius: '2rem', 
+                  fontWeight: 600, 
+                  border: 'none', 
+                  cursor: 'pointer',
+                  opacity: loading ? 0.7 : 1
+                }}>
+                {loading ? 'Sending...' : 'Submit Feedback 🐾'}
+              </button>
+            </div>
+          )}
+        </div>
       </section>
     </main>
   )

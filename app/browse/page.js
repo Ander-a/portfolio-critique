@@ -5,7 +5,6 @@ import { supabase } from '../../supabase'
 export default function Browse() {
   const [works, setWorks] = useState([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState('All')
 
   useEffect(() => {
     async function fetchWorks() {
@@ -16,48 +15,29 @@ export default function Browse() {
     fetchWorks()
   }, [])
 
-  const filtered = filter === 'All' ? works : works.filter(w => w.category === filter)
-
   return (
-    <main className="min-h-screen bg-white">
-      <nav className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
-        <a href="/" className="font-semibold text-gray-900">Portfolio Critique</a>
-        <a href="/submit" className="px-4 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800">
-          Submit work
-        </a>
+    <main style={{ backgroundColor: '#59cd49', minHeight: '100vh', fontFamily: 'Poppins, sans-serif', paddingBottom: '3rem' }}>
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 2rem', backgroundColor: 'white', borderBottom: '4px solid #2e0d30' }}>
+        <a href="/" style={{ textDecoration: 'none', fontWeight: 600, color: '#2e0d30' }}>🐼 Home</a>
+        <a href="/submit" style={{ textDecoration: 'none', padding: '0.5rem 1.2rem', backgroundColor: '#2e0d30', color: 'white', borderRadius: '2rem' }}>+ Submit Work</a>
       </nav>
 
-      <section className="max-w-4xl mx-auto px-8 py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Browse work</h1>
-        <p className="text-gray-500 text-sm mb-8">Give feedback and earn the right to receive it.</p>
-
-        <div className="flex gap-2 mb-8">
-          {["All", "Design", "Writing", "Code"].map((cat) => (
-            <button key={cat} onClick={() => setFilter(cat)}
-              className={`px-4 py-2 text-sm rounded-full border transition-colors ${filter === cat ? 'bg-black text-white border-black' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {loading ? (
-          <p className="text-gray-400 text-sm">Loading...</p>
-        ) : filtered.length === 0 ? (
-          <p className="text-gray-400 text-sm">No work submitted yet. Be the first!</p>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((work) => (
-              <div key={work.id} className="border border-gray-100 rounded-xl p-6 hover:border-gray-300 transition-colors">
-                <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">{work.category}</span>
-                <h2 className="font-semibold text-gray-900 mt-2 mb-1 leading-snug">{work.title}</h2>
-                <p className="text-sm text-gray-400 mb-3">by {work.author}</p>
-                <p className="text-sm text-gray-500 mb-4 line-clamp-2">{work.description}</p>
-                <a href="/feedback" className="text-xs font-medium text-black hover:underline">Give feedback →</a>
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem' }}>
+        <h1 style={{ color: '#2e0d30', marginBottom: '2rem' }}>Explore Projects</h1>
+        
+        {loading ? <p>Waking up the pandas...</p> : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            {works.map(work => (
+              <div key={work.id} style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '1.5rem', border: '3px solid #2e0d30', boxShadow: '5px 5px 0px #2e0d30' }}>
+                <span style={{ fontSize: '0.7rem', backgroundColor: '#59cd49', color: '#2e0d30', padding: '0.2rem 0.6rem', borderRadius: '1rem', fontWeight: 600 }}>{work.category}</span>
+                <h2 style={{ color: '#2e0d30', marginTop: '0.5rem' }}>{work.title}</h2>
+                <p style={{ color: '#3f3554', fontSize: '0.9rem', marginBottom: '1.5rem' }}>{work.description}</p>
+                <a href="/feedback" style={{ color: '#59cd49', fontWeight: 700, textDecoration: 'none' }}>GIVE FEEDBACK →</a>
               </div>
             ))}
           </div>
         )}
-      </section>
+      </div>
     </main>
   )
 }
