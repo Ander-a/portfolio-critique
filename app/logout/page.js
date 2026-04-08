@@ -1,83 +1,64 @@
 'use client'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '../../supabase'
-import './logout-style.css'
 
-export default function LogoutPage() {
-  useEffect(() => {
-    const logoutButtonStates = {
-      'default': { '--figure-duration': '100', '--transform-figure': 'none', '--walking-duration': '100', '--transform-arm1': 'none', '--transform-wrist1': 'none', '--transform-arm2': 'none', '--transform-wrist2': 'none', '--transform-leg1': 'none', '--transform-calf1': 'none', '--transform-leg2': 'none', '--transform-calf2': 'none' },
-      'hover': { '--figure-duration': '100', '--transform-figure': 'translateX(1.5px)', '--walking-duration': '100', '--transform-arm1': 'rotate(-5deg)', '--transform-wrist1': 'rotate(-15deg)', '--transform-arm2': 'rotate(5deg)', '--transform-wrist2': 'rotate(6deg)', '--transform-leg1': 'rotate(-10deg)', '--transform-calf1': 'rotate(5deg)', '--transform-leg2': 'rotate(20deg)', '--transform-calf2': 'rotate(-20deg)' },
-      'walking1': { '--figure-duration': '300', '--transform-figure': 'translateX(11px)', '--walking-duration': '300', '--transform-arm1': 'translateX(-4px) translateY(-2px) rotate(120deg)', '--transform-wrist1': 'rotate(-5deg)', '--transform-arm2': 'translateX(4px) rotate(-110deg)', '--transform-wrist2': 'rotate(-5deg)', '--transform-leg1': 'translateX(-3px) rotate(80deg)', '--transform-calf1': 'rotate(-30deg)', '--transform-leg2': 'translateX(4px) rotate(-60deg)', '--transform-calf2': 'rotate(20deg)' },
-      'walking2': { '--figure-duration': '400', '--transform-figure': 'translateX(17px)', '--walking-duration': '300', '--transform-arm1': 'rotate(60deg)', '--transform-wrist1': 'rotate(-15deg)', '--transform-arm2': 'rotate(-45deg)', '--transform-wrist2': 'rotate(6deg)', '--transform-leg1': 'rotate(-5deg)', '--transform-calf1': 'rotate(10deg)', '--transform-leg2': 'rotate(10deg)', '--transform-calf2': 'rotate(-20deg)' },
-      'falling1': { '--figure-duration': '1600', '--walking-duration': '400', '--transform-arm1': 'rotate(-60deg)', '--transform-wrist1': 'none', '--transform-arm2': 'rotate(30deg)', '--transform-wrist2': 'rotate(120deg)', '--transform-leg1': 'rotate(-30deg)', '--transform-calf1': 'rotate(-20deg)', '--transform-leg2': 'rotate(20deg)' },
-      'falling2': { '--walking-duration': '300', '--transform-arm1': 'rotate(-100deg)', '--transform-arm2': 'rotate(-60deg)', '--transform-wrist2': 'rotate(60deg)', '--transform-leg1': 'rotate(80deg)', '--transform-calf1': 'rotate(20deg)', '--transform-leg2': 'rotate(-60deg)' },
-      'falling3': { '--walking-duration': '500', '--transform-arm1': 'rotate(-30deg)', '--transform-wrist1': 'rotate(40deg)', '--transform-arm2': 'rotate(50deg)', '--transform-wrist2': 'none', '--transform-leg1': 'rotate(-30deg)', '--transform-leg2': 'rotate(20deg)', '--transform-calf2': 'none' }
-    };
+export default function Logout() {
+  const [loading, setLoading] = useState(false)
+  
+  // Panda Animation States
+  const [handLStyle, setHandLStyle] = useState({ height: '2.81em', top: '8.4em', left: '7.5em', transform: 'rotate(0deg)' })
+  const [handRStyle, setHandRStyle] = useState({ height: '2.81em', top: '8.4em', right: '7.5em', transform: 'rotate(0deg)' })
 
-    document.querySelectorAll('.logoutButton').forEach(button => {
-      button.state = 'default';
-      let updateButtonState = (button, state) => {
-        if (logoutButtonStates[state]) {
-          button.state = state;
-          for (let key in logoutButtonStates[state]) {
-            button.style.setProperty(key, logoutButtonStates[state][key]);
-          }
-        }
-      };
+  // When the user clicks the Logout button
+  async function handleLogout() {
+    setLoading(true)
+    
+    // 1. Interactive Panda "Hides" its eyes
+    setHandLStyle({ height: '6.56em', top: '3.87em', left: '11.75em', transform: 'rotate(-155deg)' })
+    setHandRStyle({ height: '6.56em', top: '3.87em', right: '11.75em', transform: 'rotate(155deg)' })
 
-      button.addEventListener('mouseenter', () => { if (button.state === 'default') updateButtonState(button, 'hover'); });
-      button.addEventListener('mouseleave', () => { if (button.state === 'hover') updateButtonState(button, 'default'); });
-
-      button.addEventListener('click', () => {
-        if (button.state === 'default' || button.state === 'hover') {
-          button.classList.add('clicked');
-          updateButtonState(button, 'walking1');
-          setTimeout(() => {
-            button.classList.add('door-slammed');
-            updateButtonState(button, 'walking2');
-            setTimeout(() => {
-              button.classList.add('falling');
-              updateButtonState(button, 'falling1');
-              setTimeout(() => {
-                updateButtonState(button, 'falling2');
-                setTimeout(() => {
-                  updateButtonState(button, 'falling3');
-                  // CRITICAL: Sign out and redirect after animation
-                  setTimeout(async () => { 
-                    await supabase.auth.signOut();
-                    window.location.href = '/'; 
-                  }, 1000);
-                }, 300);
-              }, 400);
-            }, 400);
-          }, 300);
-        }
-      });
-    });
-  }, []);
+    // 2. Delay slightly so the user sees the animation
+    setTimeout(async () => {
+      await supabase.auth.signOut()
+      window.location.href = '/'
+    }, 1500)
+  }
 
   return (
-    <main style={{ backgroundColor: '#59cd49', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Poppins, sans-serif' }}>
-      <div style={{ backgroundColor: 'white', padding: '3rem', borderRadius: '2.5rem', border: '4px solid #2e0d30', boxShadow: '8px 8px 0px #2e0d30', textAlign: 'center' }}>
-        <h1 style={{ color: '#2e0d30', marginBottom: '1rem' }}>Done for the day? 🐼</h1>
-        <p style={{ color: '#3f3554', marginBottom: '2.5rem' }}>Click below to sign out of the pack.</p>
-        
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button className="logoutButton logoutButton--dark">
-            <svg className="doorway" viewBox="0 0 100 100"><path d="M93.4 86.3H58.6c-1.9 0-3.4-1.5-3.4-3.4V17.1c0-1.9 1.5-3.4 3.4-3.4h34.8c1.9 0 3.4 1.5 3.4 3.4v65.8c0 1.9-1.5 3.4-3.4 3.4z" /></svg>
-            <svg className="figure" viewBox="0 0 100 100">
-              <circle cx="52.1" cy="32.4" r="6.4" /><path d="M50.7 62.8c-1.2 2.5-3.6 5-7.2 4-3.2-.9-4.9-3.5-4-7.8.7-3.4 3.1-13.8 4.1-15.8 1.7-3.4 1.6-4.6 7-3.7 4.3.7 4.6 2.5 4.3 5.4-.4 3.7-2.8 15.1-4.2 17.9z" />
-              <g className="arm1"><path d="M55.5 56.5l-6-9.5c-1-1.5-.6-3.5.9-4.4 1.5-1 3.7-1.1 4.6.4l6.1 10c1 1.5.3 3.5-1.1 4.4-1.5.9-3.5.5-4.5-.9z" /><path className="wrist1" d="M69.4 59.9L58.1 58c-1.7-.3-2.9-1.9-2.6-3.7.3-1.7 1.9-2.9 3.7-2.6l11.4 1.9c1.7.3 2.9 1.9 2.6 3.7-.4 1.7-2 2.9-3.8 2.6z" /></g>
-              <g className="arm2"><path d="M34.2 43.6L45 40.3c1.7-.6 3.5.3 4 2 .6 1.7-.3 4-2 4.5l-10.8 2.8c-1.7.6-3.5-.3-4-2-.6-1.6.3-3.4 2-4z" /><path className="wrist2" d="M27.1 56.2L32 45.7c.7-1.6 2.6-2.3 4.2-1.6 1.6.7 2.3 2.6 1.6 4.2L33 58.8c-.7 1.6-2.6 2.3-4.2 1.6-1.7-.7-2.4-2.6-1.7-4.2z" /></g>
-              <g className="leg1"><path d="M52.1 73.2s-7-5.7-7.9-6.5c-.9-.9-1.2-3.5-.1-4.9 1.1-1.4 3.8-1.9 5.2-.9l7.9 7c1.4 1.1 1.7 3.5.7 4.9-1.1 1.4-4.4 1.5-5.8.4z" /><path className="calf1" d="M52.6 84.4l-1-12.8c-.1-1.9 1.5-3.6 3.5-3.7 2-.1 3.7 1.4 3.8 3.4l1 12.8c.1 1.9-1.5 3.6-3.5 3.7-2 0-3.7-1.5-3.8-3.4z" /></g>
-              <g className="leg2"><path d="M37.8 72.7s1.3-10.2 1.6-11.4 2.4-2.8 4.1-2.6c1.7.2 3.6 2.3 3.4 4l-1.8 11.1c-.2 1.7-1.7 3.3-3.4 3.1-1.8-.2-4.1-2.4-3.9-4.2z" /><path className="calf2" d="M29.5 82.3l9.6-10.9c1.3-1.4 3.6-1.5 5.1-.1 1.5 1.4.4 4.9-.9 6.3l-8.5 9.6c-1.3 1.4-3.6 1.5-5.1.1-1.4-1.3-1.5-3.5-.2-5z" /></g>
-            </svg>
-            <svg className="door" viewBox="0 0 100 100"><path d="M93.4 86.3H58.6c-1.9 0-3.4-1.5-3.4-3.4V17.1c0-1.9 1.5-3.4 3.4-3.4h34.8c1.9 0 3.4 1.5 3.4 3.4v65.8c0 1.9-1.5 3.4-3.4 3.4z" /><circle cx="66" cy="50" r="3.7" /></svg>
-            <span className="button-text">Log Out</span>
+    <div style={{ backgroundColor: '#59cd49', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Poppins, sans-serif' }}>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+      
+      <div style={{ position: 'relative', height: '31.25em', width: '31.25em' }}>
+        {/* Panda Face */}
+        <div style={{ height: '7.5em', width: '8.4em', backgroundColor: '#ffffff', border: '0.18em solid #2e0d30', borderRadius: '7.5em 7.5em 5.62em 5.62em', position: 'absolute', top: '2em', margin: 'auto', left: 0, right: 0 }}>
+          <div style={{ backgroundColor: '#3f3554', height: '2.18em', width: '2em', borderRadius: '2em', position: 'absolute', top: '2.18em', left: '1.37em', transform: 'rotate(-20deg)' }}>
+            <div style={{ height: '0.6em', width: '0.6em', backgroundColor: '#ffffff', borderRadius: '50%', position: 'absolute', top: '0.6em', left: '0.6em' }} />
+          </div>
+          <div style={{ backgroundColor: '#3f3554', height: '2.18em', width: '2em', borderRadius: '2em', position: 'absolute', top: '2.18em', right: '1.37em', transform: 'rotate(20deg)' }}>
+            <div style={{ height: '0.6em', width: '0.6em', backgroundColor: '#ffffff', borderRadius: '50%', position: 'absolute', top: '0.6em', right: '0.6em' }} />
+          </div>
+          <div style={{ height: '1em', width: '1em', backgroundColor: '#3f3554', position: 'absolute', top: '4.37em', margin: 'auto', left: 0, right: 0, borderRadius: '1.2em 0 0 0.25em', transform: 'rotate(45deg)' }} />
+        </div>
+
+        {/* Hands */}
+        <div style={{ backgroundColor: '#3f3554', width: '2.5em', border: '0.18em solid #2e0d30', borderRadius: '0.6em 0.6em 2.18em 2.18em', transition: '1s all', position: 'absolute', zIndex: 10, ...handLStyle }} />
+        <div style={{ backgroundColor: '#3f3554', width: '2.5em', border: '0.18em solid #2e0d30', borderRadius: '0.6em 0.6em 2.18em 2.18em', transition: '1s all', position: 'absolute', zIndex: 10, ...handRStyle }} />
+
+        {/* Confirmation Card */}
+        <div style={{ width: '23.75em', backgroundColor: '#ffffff', position: 'absolute', transform: 'translate(-50%, -50%)', top: 'calc(50% + 3.1em)', left: '50%', padding: '2em 3.1em', borderRadius: '1.5em', border: '4px solid #2e0d30', boxShadow: '8px 8px 0px #2e0d30' }}>
+          <h2 style={{ color: '#2e0d30', textAlign: 'center', marginBottom: '1rem' }}>Done for now?</h2>
+          <p style={{ textAlign: 'center', color: '#3f3554', fontSize: '0.9em', marginBottom: '2rem' }}>We'll keep your projects safe until you return to the pack.</p>
+          
+          <button onClick={handleLogout} disabled={loading}
+            style={{ fontSize: '1em', padding: '0.8em 0', borderRadius: '2em', border: 'none', cursor: 'pointer', backgroundColor: '#ff8bb1', color: '#2e0d30', fontWeight: 600, width: '100%', border: '3px solid #2e0d30', boxShadow: '4px 4px 0px #2e0d30' }}>
+            {loading ? 'Logging out...' : 'Confirm Logout 🐾'}
           </button>
+          
+          <a href="/browse" style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem', color: '#2e0d30', fontSize: '0.85em', fontWeight: 600, textDecoration: 'none' }}>
+            Wait, take me back!
+          </a>
         </div>
       </div>
-    </main>
-  );
+    </div>
+  )
 }
