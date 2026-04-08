@@ -1,5 +1,6 @@
 'use client'
 import { useEffect } from 'react'
+import { supabase } from '../../supabase'
 import './logout-style.css'
 
 export default function LogoutPage() {
@@ -42,7 +43,11 @@ export default function LogoutPage() {
                 updateButtonState(button, 'falling2');
                 setTimeout(() => {
                   updateButtonState(button, 'falling3');
-                  setTimeout(() => { window.location.href = '/'; }, 1000);
+                  // CRITICAL: Sign out and redirect after animation
+                  setTimeout(async () => { 
+                    await supabase.auth.signOut();
+                    window.location.href = '/'; 
+                  }, 1000);
                 }, 300);
               }, 400);
             }, 400);
@@ -55,8 +60,8 @@ export default function LogoutPage() {
   return (
     <main style={{ backgroundColor: '#59cd49', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Poppins, sans-serif' }}>
       <div style={{ backgroundColor: 'white', padding: '3rem', borderRadius: '2.5rem', border: '4px solid #2e0d30', boxShadow: '8px 8px 0px #2e0d30', textAlign: 'center' }}>
-        <h1 style={{ color: '#2e0d30', marginBottom: '1rem' }}>See you later! 🐼</h1>
-        <p style={{ color: '#3f3554', marginBottom: '2.5rem' }}>The pack will miss you. Click to logout.</p>
+        <h1 style={{ color: '#2e0d30', marginBottom: '1rem' }}>Done for the day? 🐼</h1>
+        <p style={{ color: '#3f3554', marginBottom: '2.5rem' }}>Click below to sign out of the pack.</p>
         
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <button className="logoutButton logoutButton--dark">
