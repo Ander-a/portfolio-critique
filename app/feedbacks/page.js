@@ -17,18 +17,18 @@ export default function Feedbacks() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#59cd49', fontFamily: 'Poppins, sans-serif' }}>
-      {/* Sidebar */}
-      <aside style={{ width: '260px', backgroundColor: 'white', borderRight: '4px solid #2e0d30', display: 'flex', flexDirection: 'column', padding: '2rem 1.5rem', position: 'fixed', height: '100vh' }}>
+      {/* Sidebar Dashboard Menu */}
+      <aside style={sidebarStyle}>
         <h2 style={{ color: '#2e0d30', marginBottom: '3rem' }}>🐼 Dashboard</h2>
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
-          <a href="/browse" style={{ textDecoration: 'none', color: '#3f3554', fontWeight: 600, padding: '1rem' }}>🔍 Browse Work</a>
-          <a href="/submit" style={{ textDecoration: 'none', color: '#3f3554', fontWeight: 600, padding: '1rem' }}>📤 Submit Work</a>
-          <a href="/feedbacks" style={{ textDecoration: 'none', color: '#2e0d30', fontWeight: 700, backgroundColor: '#f0f0f0', padding: '1rem', borderRadius: '1rem', border: '2px solid #2e0d30' }}>💬 Community</a>
+          <a href="/browse" style={sidebarLinkStyle}>🔍 Browse Work</a>
+          <a href="/submit" style={sidebarLinkStyle}>📤 Submit Work</a>
+          <a href="/feedbacks" style={{ ...sidebarLinkStyle, backgroundColor: '#f0f0f0', border: '2px solid #2e0d30' }}>💬 Community</a>
         </nav>
-        <a href="/logout" style={{ marginTop: 'auto', padding: '1rem', backgroundColor: '#ff8bb1', color: '#2e0d30', borderRadius: '1.5rem', textAlign: 'center', fontWeight: 600, textDecoration: 'none', border: '3px solid #2e0d30', boxShadow: '4px 4px 0px #2e0d30' }}>Logout 🐾</a>
+        <a href="/logout" style={logoutButtonStyle}>Logout 🐾</a>
       </aside>
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <main style={{ marginLeft: '260px', flex: 1, padding: '3rem' }}>
         <h1 style={{ color: '#2e0d30', marginBottom: '2rem' }}>Panda Peer Reviews</h1>
         <div style={{ maxWidth: '700px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
